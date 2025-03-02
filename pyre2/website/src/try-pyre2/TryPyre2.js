@@ -40,6 +40,8 @@ reveal_type(test(42))
 
 `;
 
+const LLM_SERVICE_URL= 'http://localhost:5002'//'https://type-check-service-b4ffb457dde9.herokuapp.com'
+
 const pyre2WasmUninitializedPromise =
   typeof window !== 'undefined' ? import('./pyre2_wasm') : new Promise((_resolve) => {});
 
@@ -51,6 +53,8 @@ const pyre2WasmInitializedPromise = pyre2WasmUninitializedPromise.then(async (mo
 export default component TryPyre2(
   defaultFlowVersion: string,
   flowVersions: $ReadOnlyArray<string>,
+  editorHeight: number,
+  codeSample: string,
 ) {
   const {withBaseUrl} = useBaseUrlUtils();
   const editorRef = useRef(null);
@@ -102,15 +106,81 @@ export default component TryPyre2(
     editorRef.current = editor;
   }
 
+  async function addTypesToCode() {
+    if (!editorRef.current) return;
+    const currentCode = editorRef.current.getValue();
+  
+    try {
+      const response = await fetch(`${LLM_SERVICE_URL}/add-types`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: currentCode }),
+      });
+  
+      const data = await response.json();
+      if (response.ok) {
+        editorRef.current.setValue(data.typedCode);
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (error) {
+      console.error("Failed to fetch types:", error);
+      alert("Failed to fetch types from backend.");
+    }
+  }
+  
+  async function explainTypeError() {
+    if (!editorRef.current) return;
+    const editor = editorRef.current;
+    const model = editor.getModel();
+    const position = editor.getPosition(); // Get cursor position
+    const currentCode = editor.getValue();
+    const typeError = ' ' //get error from pyreService somehow
+  
+    try {
+      const response = await fetch(`${LLM_SERVICE_URL}/explain-error`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: currentCode, typeError: typeError }),
+      });
+  
+      const data = await response.json();
+      if (response.ok) {
+        const explanation = data.explanation || "No explanation available.";
+  
+        // Register a Monaco hover provider for Python
+        monaco.languages.registerHoverProvider("python", {
+          provideHover: function (_, hoverPosition) {
+            if (hoverPosition.lineNumber === position.lineNumber) {
+              return {
+                range: new monaco.Range(position.lineNumber, 1, position.lineNumber, 1),
+                contents: [{ value: `**AI Explanation:**\n\n${explanation}` }],
+              };
+            }
+          },
+        });
+  
+        // Manually trigger the hover effect
+        editor.trigger("keyboard", "editor.action.showHover");
+      } else {
+        console.error("Error from backend:", data.error);
+      }
+    } catch (error) {
+      console.error("Failed to fetch explanation:", error);
+    }
+  }
+
+  const height = editorHeight || "calc(100vh - var(--ifm-navbar-height) - 40px)";
+
   return (
     <div className={styles.tryEditor}>
       <div className={styles.code}>
         <div className={styles.editorContainer}>
           <Editor
-            defaultValue={DEFAULT_PYTHON_PROGRAM}
+            defaultValue={codeSample || DEFAULT_PYTHON_PROGRAM}
             defaultLanguage="python"
             theme="vs-light"
-            height="calc(100vh - var(--ifm-navbar-height) - 40px)"
+            height={height}
             onChange={forceRecheck}
             onMount={onMount}
             options={{
@@ -121,6 +191,16 @@ export default component TryPyre2(
             }}
           />
         </div>
+        {!codeSample && (
+          <div className={styles.buttonContainer}>
+            <button className={styles.button} onClick={addTypesToCode}>
+              ➕ Add Types to My Code
+            </button>
+            <button className={styles.button} onClick={explainTypeError}>
+              ❓ Explain This Type Error to Me
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

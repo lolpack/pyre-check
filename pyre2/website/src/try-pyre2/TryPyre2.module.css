@@ -21,7 +21,7 @@
 .tryEditorConfig {
     position: absolute;
     width: 100%;
-    height: calc(100vh - var(--ifm-navbar-height) - 40px);
+    /* height: calc(100vh - var(--ifm-navbar-height) - 40px); */
     z-index: 10;
     background-color: white;
     overflow: auto;
@@ -77,7 +77,7 @@
 .tryEditor {
     display: flex;
     flex: 1;
-    height: calc(100vh - var(--ifm-navbar-height));
+    /* height: calc(100vh - var(--ifm-navbar-height)); */
 }
 
 .code,
@@ -100,7 +100,7 @@
 .resultBody {
     display: flex;
     flex: 1;
-    height: calc(100vh - var(--ifm-navbar-height) - 40px);
+    /* height: calc(100vh - var(--ifm-navbar-height) - 40px); */
     overflow: auto;
 }
 
@@ -200,3 +200,24 @@
 .refinedValueDecoration {
     background-color: rgba(156, 204, 44, 0.25) !important;
 }
+
+.buttonContainer {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .button {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .button:hover {
+    background-color: #0056b3;
+  }
+  

@@ -43,6 +43,15 @@
   background-color: #2d343a;
 }
 
+/* PyreFly Navbar Styling */
+.navbar__title {
+  font-family: "Orbitron", sans-serif; /* Sci-fi & glowing effect */
+  font-size: 1.5rem; /* Adjust size */
+  font-weight: bold;
+  color: #ffcc00; /* Bright yellow-orange */
+  text-shadow: 0px 0px 8px rgba(255, 204, 0, 0.8), 0px 0px 16px rgba(255, 140, 0, 0.5);
+}
+
 .navbar .navbar__link, .navbar .navbar__toggle, .navbar .menu__link, .navbar .navbar-sidebar__back {
   color: rgba(255, 255, 255, 0.7);
 }

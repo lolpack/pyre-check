@@ -82,15 +82,12 @@ module.exports = {
       respectPrefersColorScheme: false,
     },
     navbar: {
-      logo: {
-        alt: 'My Facebook Project Logo',
-        src: 'img/logo.svg',
-      },
+      title: 'Pyrefly',
       items: [
         {
           to: 'en/docs/',
           activeBasePath: 'en/docs',
-          label: 'Docs',
+          label: 'Code Samples',
           position: 'left',
         },
         process.env.INTERNAL_STATIC_DOCS
@@ -98,7 +95,7 @@ module.exports = {
           : {
               to: 'try/',
               activeBasePath: 'try',
-              label: 'Try',
+              label: 'Sandbox',
               position: 'left',
             },
         {

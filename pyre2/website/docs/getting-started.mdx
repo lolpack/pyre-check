@@ -1,0 +1,59 @@
+---
+title: Code Samples
+slug: /getting-started
+description:
+  Never used a type system before or just new to Pyre2? Let's get you up and
+  running in a few minutes.
+---
+
+import TryPyre2 from '@site/src/try-pyre2/TryPyre2';
+
+Getting started filler
+
+## Generics
+
+Generics are cool and we support it. Blah blah blah
+
+Try it here
+
+<TryPyre2
+  defaultFlowVersion="1.0.0"
+  flowVersions={["1.0.0", "1.1.0"]}
+  editorHeight={200}
+  codeSample={`# Example: Type Checking in Pyre
+from typing import List
+def sum_numbers(numbers: List[int]) -> int:
+    return sum(numbers)
+reveal_type(sum_numbers([1, 2, 3]))  # Should show int
+`}
+/>
+
+## Dataclasses
+
+Fun and exciting, give it a try
+
+<TryPyre2
+  defaultFlowVersion="1.0.0"
+  flowVersions={["1.0.0", "1.1.0"]}
+  editorHeight={200}
+  codeSample={`# Example: Type Checking in Pyre
+from typing import List
+def sum_numbers(numbers: List[int]) -> int:
+    return sum(numbers)
+reveal_type(sum_numbers([1, 2, 3]))  # Should show int
+`}
+/>
+
+## Sample3
+
+<TryPyre2
+  defaultFlowVersion="1.0.0"
+  flowVersions={["1.0.0", "1.1.0"]}
+  editorHeight={200}
+  codeSample={`# Example: Type Checking in Pyre
+from typing import List
+def sum_numbers(numbers: List[int]) -> int:
+    return sum(numbers)
+reveal_type(sum_numbers([1, 2, 3]))  # Should show int
+`}
+/>
